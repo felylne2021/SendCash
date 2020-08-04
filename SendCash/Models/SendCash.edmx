@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SendCashModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="AccountId" />
+          </Key>
+          <Property Name="AccountId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountNumber" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="AccountName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="BankId" Type="int" Nullable="false" />
+          <Property Name="AccountBalance" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Bank">
+          <Key>
+            <PropertyRef Name="BankId" />
+          </Key>
+          <Property Name="BankId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BankName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="BankPhone" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="BankAddress" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TransactionDetail">
+          <Key>
+            <PropertyRef Name="TransactionDetailId" />
+          </Key>
+          <Property Name="TransactionDetailId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TransactionId" Type="bigint" />
+          <Property Name="ReceiverName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="ReceiverAccountNumber" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ReceiverBankName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="TransactionAmount" Type="bigint" Nullable="false" />
+          <Property Name="isApproved" Type="bit" Nullable="false" />
+          <Property Name="isComplete" Type="bit" Nullable="false" />
+          <Property Name="CompleteDt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="TransactionHeader">
+          <Key>
+            <PropertyRef Name="TransactionId" />
+          </Key>
+          <Property Name="TransactionId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SenderId" Type="bigint" Nullable="false" />
+          <Property Name="TransactionDt" Type="datetime" />
+        </EntityType>
+        <Association Name="FK__Account__BankId__398D8EEE">
+          <End Role="Bank" Type="Self.Bank" Multiplicity="1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bank">
+              <PropertyRef Name="BankId" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="BankId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transacti__Sende__44FF419A">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="TransactionHeader" Type="Self.TransactionHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="TransactionHeader">
+              <PropertyRef Name="SenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transacti__Trans__48CFD27E">
+          <End Role="TransactionHeader" Type="Self.TransactionHeader" Multiplicity="0..1" />
+          <End Role="TransactionDetail" Type="Self.TransactionDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransactionHeader">
+              <PropertyRef Name="TransactionId" />
+            </Principal>
+            <Dependent Role="TransactionDetail">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="ValidateTransaction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="SendCashModelStoreContainer">
+          <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Bank" EntityType="Self.Bank" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransactionDetail" EntityType="Self.TransactionDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransactionHeader" EntityType="Self.TransactionHeader" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Account__BankId__398D8EEE" Association="Self.FK__Account__BankId__398D8EEE">
+            <End Role="Bank" EntitySet="Bank" />
+            <End Role="Account" EntitySet="Account" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transacti__Sende__44FF419A" Association="Self.FK__Transacti__Sende__44FF419A">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="TransactionHeader" EntitySet="TransactionHeader" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transacti__Trans__48CFD27E" Association="Self.FK__Transacti__Trans__48CFD27E">
+            <End Role="TransactionHeader" EntitySet="TransactionHeader" />
+            <End Role="TransactionDetail" EntitySet="TransactionDetail" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SendCashModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="AccountId" />
+          </Key>
+          <Property Name="AccountId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AccountName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BankId" Type="Int32" Nullable="false" />
+          <Property Name="AccountBalance" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Bank" Relationship="Self.FK__Account__BankId__398D8EEE" FromRole="Account" ToRole="Bank" />
+          <NavigationProperty Name="TransactionHeaders" Relationship="Self.FK__Transacti__Sende__44FF419A" FromRole="Account" ToRole="TransactionHeader" />
+        </EntityType>
+        <EntityType Name="Bank">
+          <Key>
+            <PropertyRef Name="BankId" />
+          </Key>
+          <Property Name="BankId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BankName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BankPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BankAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Accounts" Relationship="Self.FK__Account__BankId__398D8EEE" FromRole="Bank" ToRole="Account" />
+        </EntityType>
+        <EntityType Name="TransactionDetail">
+          <Key>
+            <PropertyRef Name="TransactionDetailId" />
+          </Key>
+          <Property Name="TransactionDetailId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TransactionId" Type="Int64" />
+          <Property Name="ReceiverName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ReceiverAccountNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ReceiverBankName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TransactionAmount" Type="Int64" Nullable="false" />
+          <Property Name="isApproved" Type="Boolean" Nullable="false" />
+          <Property Name="isComplete" Type="Boolean" Nullable="false" />
+          <Property Name="CompleteDt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="TransactionHeader" Relationship="Self.FK__Transacti__Trans__48CFD27E" FromRole="TransactionDetail" ToRole="TransactionHeader" />
+        </EntityType>
+        <EntityType Name="TransactionHeader">
+          <Key>
+            <PropertyRef Name="TransactionId" />
+          </Key>
+          <Property Name="TransactionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SenderId" Type="Int64" Nullable="false" />
+          <Property Name="TransactionDt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Account" Relationship="Self.FK__Transacti__Sende__44FF419A" FromRole="TransactionHeader" ToRole="Account" />
+          <NavigationProperty Name="TransactionDetails" Relationship="Self.FK__Transacti__Trans__48CFD27E" FromRole="TransactionHeader" ToRole="TransactionDetail" />
+        </EntityType>
+        <Association Name="FK__Account__BankId__398D8EEE">
+          <End Role="Bank" Type="Self.Bank" Multiplicity="1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bank">
+              <PropertyRef Name="BankId" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="BankId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transacti__Sende__44FF419A">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="TransactionHeader" Type="Self.TransactionHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="TransactionHeader">
+              <PropertyRef Name="SenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transacti__Trans__48CFD27E">
+          <End Role="TransactionHeader" Type="Self.TransactionHeader" Multiplicity="0..1" />
+          <End Role="TransactionDetail" Type="Self.TransactionDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransactionHeader">
+              <PropertyRef Name="TransactionId" />
+            </Principal>
+            <Dependent Role="TransactionDetail">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SendCashEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="Self.Account" />
+          <EntitySet Name="Banks" EntityType="Self.Bank" />
+          <EntitySet Name="TransactionDetails" EntityType="Self.TransactionDetail" />
+          <EntitySet Name="TransactionHeaders" EntityType="Self.TransactionHeader" />
+          <AssociationSet Name="FK__Account__BankId__398D8EEE" Association="Self.FK__Account__BankId__398D8EEE">
+            <End Role="Bank" EntitySet="Banks" />
+            <End Role="Account" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transacti__Sende__44FF419A" Association="Self.FK__Transacti__Sende__44FF419A">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="TransactionHeader" EntitySet="TransactionHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transacti__Trans__48CFD27E" Association="Self.FK__Transacti__Trans__48CFD27E">
+            <End Role="TransactionHeader" EntitySet="TransactionHeaders" />
+            <End Role="TransactionDetail" EntitySet="TransactionDetails" />
+          </AssociationSet>
+          <FunctionImport Name="ValidateTransaction" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SendCashModelStoreContainer" CdmEntityContainer="SendCashEntities">
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="SendCashModel.Account">
+              <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="BankId" ColumnName="BankId" />
+                <ScalarProperty Name="AccountBalance" ColumnName="AccountBalance" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Banks">
+            <EntityTypeMapping TypeName="SendCashModel.Bank">
+              <MappingFragment StoreEntitySet="Bank">
+                <ScalarProperty Name="BankId" ColumnName="BankId" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="BankPhone" ColumnName="BankPhone" />
+                <ScalarProperty Name="BankAddress" ColumnName="BankAddress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionDetails">
+            <EntityTypeMapping TypeName="SendCashModel.TransactionDetail">
+              <MappingFragment StoreEntitySet="TransactionDetail">
+                <ScalarProperty Name="TransactionDetailId" ColumnName="TransactionDetailId" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="ReceiverName" ColumnName="ReceiverName" />
+                <ScalarProperty Name="ReceiverAccountNumber" ColumnName="ReceiverAccountNumber" />
+                <ScalarProperty Name="ReceiverBankName" ColumnName="ReceiverBankName" />
+                <ScalarProperty Name="TransactionAmount" ColumnName="TransactionAmount" />
+                <ScalarProperty Name="isApproved" ColumnName="isApproved" />
+                <ScalarProperty Name="isComplete" ColumnName="isComplete" />
+                <ScalarProperty Name="CompleteDt" ColumnName="CompleteDt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionHeaders">
+            <EntityTypeMapping TypeName="SendCashModel.TransactionHeader">
+              <MappingFragment StoreEntitySet="TransactionHeader">
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="SenderId" ColumnName="SenderId" />
+                <ScalarProperty Name="TransactionDt" ColumnName="TransactionDt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ValidateTransaction" FunctionName="SendCashModel.Store.ValidateTransaction" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
