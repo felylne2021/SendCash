@@ -213,6 +213,9 @@
     <Content Include="Content\DataTables\js\dataTables.semanticui.min.js" />
     <Content Include="Content\DataTables\js\jquery.dataTables.js" />
     <Content Include="Content\DataTables\js\jquery.dataTables.min.js" />
+    <Content Include="Content\images\minus.svg" />
+    <Content Include="Content\images\plus.svg" />
+    <Content Include="Content\sendCash.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

@@ -1,0 +1,10 @@
+﻿td.details-control {
+    background: url(/Content/images/plus.svg) no-repeat center center;
+    background-size: 21px 21px;
+    cursor: pointer;
+}
+
+tr.shown td.details-control {
+    background: url(/Content/images/minus.svg) no-repeat center center;
+    background-size: 21px 21px;
+}

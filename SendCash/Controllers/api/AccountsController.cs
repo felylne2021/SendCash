@@ -27,7 +27,8 @@ namespace SendCash.Controllers.api {
                 acc.AccountName,
                 acc.AccountNumber,
                 acc.Bank.BankName,
-                acc.AccountId
+                acc.AccountId,
+                acc.AccountBalance
             }).ToList());
 
         }

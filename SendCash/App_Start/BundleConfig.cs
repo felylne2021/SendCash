@@ -22,6 +22,7 @@ namespace SendCash {
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-flatly.css",
+                      "~/Content/sendCash.css",
                       "~/Content/site.css"));
         }
     }

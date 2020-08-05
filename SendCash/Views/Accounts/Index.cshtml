@@ -26,7 +26,7 @@
             <th>
                 Bank Name
             </th>
-            <th></th>
+            <th style="width: 60px"></th>
         </tr>
     </thead>
     <tbody>
@@ -36,13 +36,30 @@
 
 <script type="text/javascript">
 
+    function format(d) {
+        // `d` is the original data object for the row
+        var bal = d.AccountBalance;
+
+        return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+            '<tr>' +
+            '<td>Account Balance: <b>IDR '+ bal.toLocaleString() + '<b></td>' +
+            '</tr>' +
+            '</table>';
+    }
+
     $(document).ready(function () {
         var accountDT = $('#accountTable ').DataTable({
             ajax: {
-                url: "api/Accounts",
+                url: "https://" + window.location.host + "/api/Accounts",
                 dataSrc: ""
             },
             columns: [
+                {
+                    "className": 'details-control',
+                    "orderable": false,
+                    "data": null,
+                    "defaultContent": ''
+                },
                 {
                     data: "AccountName"
                 },
@@ -56,11 +73,13 @@
                     data: "AccountId",
                     render: function (data) {
                         return "<button data-customer-id=" + data + " class='btn-danger js-delete'>Delete</button>";
-                    }
+                    },
+                    "orderable": false
                 }
-            ]
+            ],
+            "order": [[1, 'asc']]
         });
-        
+
         $("#accountTable").on("click", ".js-delete", function () {
             var button = $(this);
             bootbox.confirm("This account will be permanently deleted. Procees?", function (result) {
@@ -75,6 +94,23 @@
                 }
             });
 
+        });
+
+        // Add event listener for opening and closing details
+        $('#accountTable tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = accountDT.row(tr);
+
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                // Open this row
+                row.child(format(row.data())).show();
+                tr.addClass('shown');
+            }
         });
     });
 </script>
