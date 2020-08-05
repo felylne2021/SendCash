@@ -1,14 +1,12 @@
-﻿@model IEnumerable<SendCash.Models.Account>
-
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-@*<link rel="stylesheet" href="~/Content/DataTables/css/dataTables.bootstrap.css">*@
-@*<script type="text/javascript" src="~/Content/DataTables/js/jquery.dataTables.js"></script>*@
+<link rel="stylesheet" href="~/Content/DataTables/css/dataTables.bootstrap.css">
 <script type="text/javascript" src="~/Content/DataTables/datatables.min.js"></script>
+<script type="text/javascript" src="~/Content/DataTables/js/dataTables.bootstrap.js"></script>
 
 <h2>Index</h2>
 
@@ -18,6 +16,7 @@
 <table class="table table-bordered table-hover" id="accountTable">
     <thead>
         <tr>
+            <th></th>
             <th>
                 Name
             </th>
@@ -33,62 +32,38 @@
     <tbody>
     </tbody>
 
-    @*@foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AccountNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AccountName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AccountBalance)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Bank.BankName)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id=item.AccountId }) |
-                    @Html.ActionLink("Details", "Details", new { id=item.AccountId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id=item.AccountId })
-                </td>
-            </tr>
-        }*@
-
 </table>
 
-<script>
+<script type="text/javascript">
+
     $(document).ready(function () {
-        var accountDT = $('#accountTable').DataTable({
+        var accountDT = $('#accountTable ').DataTable({
             ajax: {
-                url: "/Accounts",
+                url: "api/Accounts",
                 dataSrc: ""
             },
             columns: [
                 {
-                    data: "AccountName",
-                    //render: function (data, type, customer) {
-                    //    return "<a href='/Customers/details/" + customer.id + "'>" + customer.name + "</a>";
-                    //}
+                    data: "AccountName"
                 },
                 {
                     data: "AccountNumber"
                 },
                 {
-                    data: "Bank.BankName"
+                    data: "BankName"
                 },
                 {
                     data: "AccountId",
                     render: function (data) {
-                        return "<button data-account-id=" + data + " class='btn-danger js-delete'>Delete</button>";
+                        return "<button data-customer-id=" + data + " class='btn-danger js-delete'>Delete</button>";
                     }
                 }
             ]
-
         });
+        
         $("#accountTable").on("click", ".js-delete", function () {
             var button = $(this);
-            confirm("This account will be permanently deleted. Procees?", function (result) {
+            bootbox.confirm("This account will be permanently deleted. Procees?", function (result) {
                 if (result) {
                     $.ajax({
                         url: "/customers/" + button.attr("data-customer-id"),

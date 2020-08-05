@@ -268,7 +268,7 @@ table.dataTable td {
 .dataTables_wrapper .dataTables_paginate .paginate_button {
   box-sizing: border-box;
   display: inline-block;
-  min-width: 1.5em;
+  min-width: 3em;
   padding: 0.5em 1em;
   margin-left: 2px;
   text-align: center;
