@@ -35,7 +35,7 @@ $(document).ready(function () {
             {
                 data: "AccountId",
                 render: function (data) {
-                    return "<button data-customer-id=" + data + " class='btn-danger js-delete'>Delete</button>";
+                    return "<button data-account-id=" + data + " class='btn-danger js-delete'>Delete</button>";
                 },
                 "orderable": false
             }
@@ -48,7 +48,7 @@ $(document).ready(function () {
         bootbox.confirm("This account will be permanently deleted. Procees?", function (result) {
             if (result) {
                 $.ajax({
-                    url: "/customers/" + button.attr("data-customer-id"),
+                    url: "api/Accounts/" + button.attr("data-account-id"),
                     method: "DELETE",
                     success: function () {
                         accountDT.row(button.parents("tr")).remove().draw();
@@ -103,11 +103,9 @@ $(document).on("click", "#saveAccount", function () {
     $.ajax({
         url: 'https://' + window.location.host + '/Accounts/Create',
         type: 'POST',
-        contentType: 'application/json',
         dataType: 'html',
-        //headers: { __RequestVerificationToken: token },
         data: {
-            __requestverificationtoken: token,
+            __RequestVerificationToken: token,
             AccountName: name,
             AccountNumber: number,
             BankId: bankId,
@@ -115,25 +113,20 @@ $(document).on("click", "#saveAccount", function () {
         },
         success: function (data) {
 
-            console.log(JSON.stringify(data));
             $("#addAccountForm")[0].reset();
 
             $('#accountTable').DataTable().ajax.reload();
 
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            console.log(data);
-            console.log("failed");
-            console.log(jqXHR);
+            alert("Error.");
         }
     });
 
 });
 
-
-
 // close form -> reset form
 $(document).on("click", "#closeForm", function () {
-    console.log("masuk");
+
     $("#addAccountForm")[0].reset();
 });

@@ -5,42 +5,45 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<link rel="stylesheet" href="~/Content/DataTables/css/dataTables.bootstrap.css">
+<script type="text/javascript" src="~/Content/DataTables/datatables.min.js"></script>
+<script type="text/javascript" src="~/Content/DataTables/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="~/Scripts/ViewScripts/Banks.js"></script>
+
 <h2>Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.BankName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BankPhone)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BankAddress)
-        </th>
-        <th></th>
-    </tr>
+<table class="table table-bordered table-hover" id="bankTable">
+    <thead>
+        <tr>
+            <th class="col-md-10">
+                Bank Name
+            </th>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.BankName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BankPhone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BankAddress)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.BankId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.BankId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.BankId })
-        </td>
-    </tr>
-}
+            <th class="col-md-2"></th>
+        </tr>
+    </thead>
 
+    <tbody>
+    </tbody>
 </table>
+
+<!-- Modal -->
+<div id="viewDetailsModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Bank Details</h4>
+            </div>
+            <div class="modal-body">
+                Hello
+            </div>
+
+        </div>
+    </div>
+</div>
