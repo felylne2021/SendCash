@@ -14,6 +14,7 @@ namespace SendCash.Controllers {
 
         // GET: Accounts
         public ActionResult Index() {
+
             return View();
         }
 
@@ -40,15 +41,14 @@ namespace SendCash.Controllers {
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "AccountId,AccountNumber,AccountName,BankId,AccountBalance")] Account account) {
+        public Account Create([Bind(Include = "AccountNumber,AccountName,BankId,AccountBalance")] Account account) {
             if (ModelState.IsValid) {
                 db.Accounts.Add(account);
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
 
             ViewBag.BankId = new SelectList(db.Banks, "BankId", "BankName", account.BankId);
-            return View(account);
+            return account;
         }
 
         // GET: Accounts/Edit/5

@@ -7,12 +7,15 @@
 <link rel="stylesheet" href="~/Content/DataTables/css/dataTables.bootstrap.css">
 <script type="text/javascript" src="~/Content/DataTables/datatables.min.js"></script>
 <script type="text/javascript" src="~/Content/DataTables/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="~/Scripts/Accounts.js"></script>
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<!-- Trigger the modal with a button -->
+<button type="button" class="btn-me bg-info btn" data-toggle="modal" data-target="#addFormModal"><b>Add Account</b></button>
+<br />
+<br />
+
 <table class="table table-bordered table-hover" id="accountTable">
     <thead>
         <tr>
@@ -34,83 +37,63 @@
 
 </table>
 
-<script type="text/javascript">
+<!-- Modal -->
+<div id="addFormModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
 
-    function format(d) {
-        // `d` is the original data object for the row
-        var bal = d.AccountBalance;
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" id="closeForm">&times;</button>
+                <h4 class="modal-title">Add Account</h4>
+            </div>
+            <div class="modal-body">
+                <form id="addAccountForm">
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        <hr />
+                        <div class="form-group">
+                            <b class="control-label col-md-4">Account Number</b>
+                            <div class="col-md-8">
+                                <input class="form-control" id="accNum" placeholder="Input Account Number" />
+                                <div id="validAccNum" class="text-danger"></div>
+                            </div>
+                        </div>
 
-        return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
-            '<tr>' +
-            '<td>Account Balance: <b>IDR '+ bal.toLocaleString() + '<b></td>' +
-            '</tr>' +
-            '</table>';
-    }
+                        <div class="form-group">
+                            <b class="control-label col-md-4">Account Name</b>
+                            <div class="col-md-8">
+                                <input class="form-control" id="accName" placeholder="Input Account Name" />
+                                <div id="validAccName" class="text-danger"></div>
+                            </div>
+                        </div>
 
-    $(document).ready(function () {
-        var accountDT = $('#accountTable ').DataTable({
-            ajax: {
-                url: "https://" + window.location.host + "/api/Accounts",
-                dataSrc: ""
-            },
-            columns: [
-                {
-                    "className": 'details-control',
-                    "orderable": false,
-                    "data": null,
-                    "defaultContent": ''
-                },
-                {
-                    data: "AccountName"
-                },
-                {
-                    data: "AccountNumber"
-                },
-                {
-                    data: "BankName"
-                },
-                {
-                    data: "AccountId",
-                    render: function (data) {
-                        return "<button data-customer-id=" + data + " class='btn-danger js-delete'>Delete</button>";
-                    },
-                    "orderable": false
-                }
-            ],
-            "order": [[1, 'asc']]
-        });
+                        <div class="form-group">
+                            <b class="control-label col-md-4">Bank Name</b>
+                            <div class="col-md-8">
+                                <select name="banks" id="banks" class="form-control" required>
+                                </select>
+                            </div>
+                        </div>
 
-        $("#accountTable").on("click", ".js-delete", function () {
-            var button = $(this);
-            bootbox.confirm("This account will be permanently deleted. Procees?", function (result) {
-                if (result) {
-                    $.ajax({
-                        url: "/customers/" + button.attr("data-customer-id"),
-                        method: "DELETE",
-                        success: function () {
-                            accountDT.row(button.parents("tr")).remove().draw();
-                        }
-                    });
-                }
-            });
+                        <div class="form-group">
+                            <b class="control-label col-md-4">Account Balance</b>
+                            <div class="col-md-8">
+                                <input class="form-control" id="accBal" placeholder="Input Initial Balance" />
+                                <div id="validAccBal" class="text-danger"></div>
+                            </div>
+                        </div>
 
-        });
+                    </div>
 
-        // Add event listener for opening and closing details
-        $('#accountTable tbody').on('click', 'td.details-control', function () {
-            var tr = $(this).closest('tr');
-            var row = accountDT.row(tr);
+                    <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal" id="closeForm">Close</button>
 
-            if (row.child.isShown()) {
-                // This row is already open - close it
-                row.child.hide();
-                tr.removeClass('shown');
-            }
-            else {
-                // Open this row
-                row.child(format(row.data())).show();
-                tr.addClass('shown');
-            }
-        });
-    });
-</script>
+                        <input type="button" value="Create" class="btn btn-success" id="saveAccount" />
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

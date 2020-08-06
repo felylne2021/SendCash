@@ -26,6 +26,7 @@ namespace SendCash.Controllers.api {
             return Json(accounts.Select(acc => new{
                 acc.AccountName,
                 acc.AccountNumber,
+                acc.BankId,
                 acc.Bank.BankName,
                 acc.AccountId,
                 acc.AccountBalance

@@ -1,0 +1,46 @@
+﻿@model IEnumerable<SendCash.Models.Bank>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BankName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BankPhone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BankAddress)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BankName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BankPhone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BankAddress)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.BankId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.BankId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.BankId })
+        </td>
+    </tr>
+}
+
+</table>
