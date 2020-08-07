@@ -9,3 +9,6 @@ tr.shown td.details-control {
     background-size: 21px 21px;
 }
 
+.dt-center {
+    text-align: center;
+}

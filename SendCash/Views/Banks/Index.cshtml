@@ -18,7 +18,10 @@
 <table class="table table-bordered table-hover" id="bankTable">
     <thead>
         <tr>
-            <th class="col-md-10">
+            <th class="col-md-1">
+                No.
+            </th>
+            <th class="col-md-9">
                 Bank Name
             </th>
 
@@ -41,7 +44,35 @@
                 <h4 class="modal-title">Bank Details</h4>
             </div>
             <div class="modal-body">
-                Hello
+                <form id="viewBankDetailsForm">
+                    <div class="form-horizontal">
+                        <hr />
+                        <div class="form-group">
+                            <b class="control-label col-md-4">Bank Name</b>
+                            <div class="col-md-8">
+                                <input class="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <b class="control-label col-md-4">Bank Phone Number</b>
+                            <div class="col-md-8">
+                                <input class="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <b class="control-label col-md-4">Bank Address</b>
+                            <div class="col-md-8">
+                                <input class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal" id="closeForm">Close</button>
+                    </div>
+                </form>
             </div>
 
         </div>

@@ -38,7 +38,7 @@ namespace SendCash.Controllers.api
             {
                 return NotFound();
             }
-
+            
             return Ok(bank);
         }
 

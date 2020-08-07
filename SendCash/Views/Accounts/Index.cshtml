@@ -55,7 +55,7 @@
                         <div class="form-group">
                             <b class="control-label col-md-4">Account Number</b>
                             <div class="col-md-8">
-                                <input class="form-control" id="accNum" placeholder="Input Account Number" />
+                                <input class="form-control" id="accNum" placeholder="Input Account Number" required/>
                                 <div id="validAccNum" class="text-danger"></div>
                             </div>
                         </div>
@@ -63,7 +63,7 @@
                         <div class="form-group">
                             <b class="control-label col-md-4">Account Name</b>
                             <div class="col-md-8">
-                                <input class="form-control" id="accName" placeholder="Input Account Name" />
+                                <input class="form-control" id="accName" placeholder="Input Account Name" required/>
                                 <div id="validAccName" class="text-danger"></div>
                             </div>
                         </div>
@@ -73,13 +73,14 @@
                             <div class="col-md-8">
                                 <select name="banks" id="banks" class="form-control" required>
                                 </select>
+                                <div id="validBank" class="text-danger"></div>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <b class="control-label col-md-4">Account Balance</b>
                             <div class="col-md-8">
-                                <input class="form-control" id="accBal" placeholder="Input Initial Balance" />
+                                <input class="form-control" id="accBal" placeholder="Input Initial Balance" required/>
                                 <div id="validAccBal" class="text-danger"></div>
                             </div>
                         </div>

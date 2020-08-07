@@ -82,7 +82,7 @@ $(document).ready(function () {
         url: "https://" + window.location.host + "/api/Banks",
         data: "{}",
         success: function (data) {
-            var s = '<option value="-1" disabled selected>Please Select a Bank</option>';
+            var s = '<option value="" disabled selected>Please Select a Bank</option>';
             for (var i = 0; i < data.length; i++) {
                 s += '<option value="' + data[i].BankId + '">' + data[i].BankName + '</option>';
             }
@@ -99,6 +99,55 @@ $(document).on("click", "#saveAccount", function () {
     var number = $("#accNum").val();
     var bankId = $("#banks").val();
     var bal = $("#accBal").val();
+
+    var flag = 0;   // check validity
+
+    // check number
+    if (number == '') {
+        $("#validAccNum").text("Please insert account number.");
+        flag++;
+    }
+    else if (isNaN(number)) {
+        $("#validAccNum").text("Please insert number only.");
+        flag++;
+    }
+    else $("#validAccNum").text("");
+
+    // check name
+    if (name == '') {
+        $("#validAccName").text("Please insert account name.");
+        flag++;
+    }
+    else $("#validAccName").text("");
+
+    // check bank
+
+    console.log(bankId);
+    if (bankId == null) {
+        $("#validBank").text("Please choose a bank.");
+        flag++;
+    }
+    else $("#validBank").text("");
+
+    // check initial balance
+    if (bal == '') {
+        $("#validAccBal").text("Please insert account's initial balance.");
+        flag++;
+    }
+    else if (isNaN(bal)) {
+        $("#validAccBal").text("Please insert number only.");
+        flag++;
+    }
+    else if (bal < 50000) {
+        $("#validAccBal").text("Initial balance must be at least IDR 50,000.");
+        flag++;
+    }
+    else $("#validAccBal").text("");
+
+    if (flag != 0) {
+        console.log(flag);
+        return false;
+    }
 
     $.ajax({
         url: 'https://' + window.location.host + '/Accounts/Create',
