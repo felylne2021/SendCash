@@ -26,7 +26,6 @@ namespace SendCash.Controllers.api
                 b.BankPhone,
                 b.BankAddress
             }).ToList());
-
         }
 
         // GET: api/Banks/5
@@ -38,8 +37,13 @@ namespace SendCash.Controllers.api
             {
                 return NotFound();
             }
-            
-            return Ok(bank);
+
+            return Json(new {
+                bank.BankId,
+                bank.BankName,
+                bank.BankPhone,
+                bank.BankAddress
+            });
         }
 
         // PUT: api/Banks/5

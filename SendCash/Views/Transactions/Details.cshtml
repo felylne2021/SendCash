@@ -1,0 +1,35 @@
+﻿@model SendCash.Models.TransactionHeader
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TransactionHeader</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TransactionDt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransactionDt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Account.AccountNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Account.AccountNumber)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.TransactionId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

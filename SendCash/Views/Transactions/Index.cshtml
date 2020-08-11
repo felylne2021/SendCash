@@ -6,35 +6,38 @@
 <link rel="stylesheet" href="~/Content/DataTables/css/dataTables.bootstrap.css">
 <script type="text/javascript" src="~/Content/DataTables/datatables.min.js"></script>
 <script type="text/javascript" src="~/Content/DataTables/js/dataTables.bootstrap.js"></script>
-<script type="text/javascript" src="~/Scripts/ViewScripts/Accounts.js"></script>
+<script type="text/javascript" src="~/Scripts/ViewScripts/Transactions.js"></script>
 
 <h2>Index</h2>
 
-<!-- Trigger the modal with a button -->
-<button type="button" class="btn-me bg-info btn" data-toggle="modal" data-target="#addFormModal"><b>Add Account</b></button>
-<br />
-<br />
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
 
-<table class="table table-bordered table-hover" id="accountTable">
+<table class="table table-bordered table-hover" id="transactionTable">
     <thead>
         <tr>
             <th></th>
             <th>
-                Name
+                Transaction Id
             </th>
             <th>
-                Account Number
+                Transaction Time
             </th>
             <th>
-                Bank Name
+                Sender Name
             </th>
-            <th style="width: 60px"></th>
+            <th>
+                Sender Account
+            </th>
+            <th>
+                Sender Bank
+            </th>
+            <th>
+            </th>
         </tr>
     </thead>
     <tbody>
     </tbody>
 
 </table>
-
-<!-- Modal -->
-@Html.Partial("_AccountModalForm")

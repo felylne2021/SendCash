@@ -40,8 +40,10 @@ $(document).on("click", "#bankDetailsBtn", function () {
     $.ajax({
         url: 'https://' + window.location.host + '/api/Banks/' + $(this).attr("data-bank-id"),
         type: 'GET',
-        success: function () {
-            alert("Succ");
+        success: function (data) {
+            $("#bankName").val(data.BankName);
+            $("#bankPhone").val(data.BankPhone);
+            $("#bankAddress").val(data.BankAddress);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             alert("Error.");

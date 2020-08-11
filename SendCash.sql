@@ -37,7 +37,8 @@ CREATE TABLE TransactionDetail(
 	TransactionAmount BIGINT NOT NULL,
 	isApproved BIT NOT NULL DEFAULT 1,	--default true, approved transaction can be sent, if success, isComplete = 1
 	isComplete BIT NOT NULL DEFAULT 0,
-	CompleteDt DATETIME
+	CompleteDt DATETIME,
+	UpdatedJson VARCHAR(500)
 )
 
 --TVP
@@ -49,7 +50,8 @@ CREATE TYPE TransactionDetailType AS TABLE(
 	TransactionAmount BIGINT,
 	isApproved BIT,	--isApproved -> valid -> can be proceed
 	isComplete BIT,
-	CompleteDt DATETIME
+	CompleteDt DATETIME,
+	UpdatedJson VARCHAR(500) --if operator updates, supervisor can see what changes
 )
 
 INSERT INTO Bank VALUES('BCA', '1500888', 'Menara BCA, Jakarta')
@@ -81,8 +83,9 @@ INSERT INTO TransactionDetail(TransactionId, ReceiverName, ReceiverAccountNumber
 INSERT INTO TransactionDetail(TransactionId, ReceiverName, ReceiverAccountNumber, ReceiverBankName, TransactionAmount) VALUES(2, 'Jerome Dika', '1247780999', 'BCA',4100000)
 SELECT * FROM TransactionDetail
 
+
 GO
-ALTER PROC ValidateTransaction (@thType TransactionHeaderType READONLY, @tdType TransactionDetailType READONLY)
+CREATE PROC ValidateTransaction (@thType TransactionHeaderType READONLY, @tdType TransactionDetailType READONLY)
 AS
 BEGIN
 	--insert header
@@ -122,5 +125,18 @@ BEGIN
 	WHERE isComplete = 0
 END
 
+GO
+CREATE PROC ViewAllTransactions
+AS
+BEGIN
+	SELECT th.TransactionId, TransactionDt, TransactionDetailId, a.AccountName as Sender, a.AccountNumber, b.BankName as [SenderBank], td.ReceiverName, td.ReceiverAccountNumber as [ReceiverAccount], td.ReceiverBankName as [TargetBank], td.TransactionAmount, td.isApproved, td.isComplete
+	FROM Bank b
+	JOIN Account a
+	ON b.BankId = a.BankId
+	JOIN TransactionHeader th
+	ON a.AccountId = th.SenderId
+	JOIN TransactionDetail td
+	ON td.TransactionId = th.TransactionId
+END
 
-SELECT * FROM TransactionDetail
+EXEC ViewAllTransactions

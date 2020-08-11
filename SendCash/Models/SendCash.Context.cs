@@ -36,5 +36,10 @@ namespace SendCash.Models
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ValidateTransaction");
         }
+    
+        public virtual ObjectResult<ViewAllTransactions_Result> ViewAllTransactions()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ViewAllTransactions_Result>("ViewAllTransactions");
+        }
     }
 }

@@ -121,7 +121,6 @@ $(document).on("click", "#saveAccount", function () {
     else $("#validAccName").text("");
 
     // check bank
-
     console.log(bankId);
     if (bankId == null) {
         $("#validBank").text("Please choose a bank.");

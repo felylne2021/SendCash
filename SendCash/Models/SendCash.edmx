@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SendCashModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SendCashModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Account">
           <Key>
             <PropertyRef Name="AccountId" />
@@ -37,6 +37,7 @@
           <Property Name="isApproved" Type="bit" Nullable="false" />
           <Property Name="isComplete" Type="bit" Nullable="false" />
           <Property Name="CompleteDt" Type="datetime" />
+          <Property Name="UpdatedJson" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="TransactionHeader">
           <Key>
@@ -83,6 +84,7 @@
           </ReferentialConstraint>
         </Association>
         <Function Name="ValidateTransaction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="ViewAllTransactions" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="SendCashModelStoreContainer">
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Bank" EntityType="Self.Bank" Schema="dbo" store:Type="Tables" />
@@ -101,8 +103,7 @@
             <End Role="TransactionDetail" EntitySet="TransactionDetail" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SendCashModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -142,6 +143,7 @@
           <Property Name="isComplete" Type="Boolean" Nullable="false" />
           <Property Name="CompleteDt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="TransactionHeader" Relationship="Self.FK__Transacti__Trans__48CFD27E" FromRole="TransactionDetail" ToRole="TransactionHeader" />
+          <Property Name="UpdatedJson" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TransactionHeader">
           <Key>
@@ -207,7 +209,22 @@
             <End Role="TransactionDetail" EntitySet="TransactionDetails" />
           </AssociationSet>
           <FunctionImport Name="ValidateTransaction" />
+          <FunctionImport Name="ViewAllTransactions" ReturnType="Collection(SendCashModel.ViewAllTransactions_Result)" />
         </EntityContainer>
+        <ComplexType Name="ViewAllTransactions_Result">
+          <Property Type="Int64" Name="TransactionId" Nullable="false" />
+          <Property Type="DateTime" Name="TransactionDt" Nullable="true" Precision="23" />
+          <Property Type="Int64" Name="TransactionDetailId" Nullable="false" />
+          <Property Type="String" Name="Sender" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="AccountNumber" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="SenderBank" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="ReceiverName" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="ReceiverAccount" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="TargetBank" Nullable="false" MaxLength="100" />
+          <Property Type="Int64" Name="TransactionAmount" Nullable="false" />
+          <Property Type="Boolean" Name="isApproved" Nullable="false" />
+          <Property Type="Boolean" Name="isComplete" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -238,6 +255,7 @@
           <EntitySetMapping Name="TransactionDetails">
             <EntityTypeMapping TypeName="SendCashModel.TransactionDetail">
               <MappingFragment StoreEntitySet="TransactionDetail">
+                <ScalarProperty Name="UpdatedJson" ColumnName="UpdatedJson" />
                 <ScalarProperty Name="TransactionDetailId" ColumnName="TransactionDetailId" />
                 <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
                 <ScalarProperty Name="ReceiverName" ColumnName="ReceiverName" />
@@ -260,6 +278,24 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="ValidateTransaction" FunctionName="SendCashModel.Store.ValidateTransaction" />
+          <FunctionImportMapping FunctionImportName="ViewAllTransactions" FunctionName="SendCashModel.Store.ViewAllTransactions">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SendCashModel.ViewAllTransactions_Result">
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="TransactionDt" ColumnName="TransactionDt" />
+                <ScalarProperty Name="TransactionDetailId" ColumnName="TransactionDetailId" />
+                <ScalarProperty Name="Sender" ColumnName="Sender" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="SenderBank" ColumnName="SenderBank" />
+                <ScalarProperty Name="ReceiverName" ColumnName="ReceiverName" />
+                <ScalarProperty Name="ReceiverAccount" ColumnName="ReceiverAccount" />
+                <ScalarProperty Name="TargetBank" ColumnName="TargetBank" />
+                <ScalarProperty Name="TransactionAmount" ColumnName="TransactionAmount" />
+                <ScalarProperty Name="isApproved" ColumnName="isApproved" />
+                <ScalarProperty Name="isComplete" ColumnName="isComplete" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

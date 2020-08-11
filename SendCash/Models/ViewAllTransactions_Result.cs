@@ -10,21 +10,20 @@
 namespace SendCash.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class TransactionDetail
+    public partial class ViewAllTransactions_Result
     {
+        public long TransactionId { get; set; }
+        public Nullable<System.DateTime> TransactionDt { get; set; }
         public long TransactionDetailId { get; set; }
-        public Nullable<long> TransactionId { get; set; }
+        public string Sender { get; set; }
+        public string AccountNumber { get; set; }
+        public string SenderBank { get; set; }
         public string ReceiverName { get; set; }
-        public string ReceiverAccountNumber { get; set; }
-        public string ReceiverBankName { get; set; }
+        public string ReceiverAccount { get; set; }
+        public string TargetBank { get; set; }
         public long TransactionAmount { get; set; }
         public bool isApproved { get; set; }
         public bool isComplete { get; set; }
-        public Nullable<System.DateTime> CompleteDt { get; set; }
-        public string UpdatedJson { get; set; }
-    
-        public virtual TransactionHeader TransactionHeader { get; set; }
     }
 }
