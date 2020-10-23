@@ -7,13 +7,15 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using SendCash.Models;
+using SendCash.ViewModels;
 
 namespace SendCash.Controllers {
     public class AccountsController : Controller {
         private SendCashEntities db = new SendCashEntities();
 
         // GET: Accounts
-        public ActionResult Index() {
+        public ActionResult Index()  {
+           
 
             return View();
         }
